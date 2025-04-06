@@ -1,0 +1,77 @@
+html.lenis {
+    height: auto;
+}
+
+
+.lenis.lenis-smooth {
+    scroll-behavior: auto;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+    overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+    overflow: hidden;
+}
+
+
+
+
+.line,
+.line-block {
+    position: relative;
+}
+
+.line-block {
+    overflow: hidden;
+}
+
+
+
+.project_section_title>.line>.word, 
+.hero_main_display .word,
+.hero_main_content .word {
+    transform: translateY(-.1em);
+}
+
+
+@media screen and (max-width: 767px) {
+    .hero_main_display .word,
+    .hero_main_content .word {
+        transform: translateY(-.05em);
+    }
+}
+
+@media screen and (max-width: 628px) {
+    .hero_main_display .word,
+    .hero_main_content .word {
+        transform: translateY(-.06em);
+    }
+}
+
+
+
+.line-mask {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 101%;
+    background-color: var(--swatch--light-faded);
+    opacity: .75;
+    z-index: 2;
+}
+
+
+
+[textContainer] {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+[data-width=full] {
+    /* white-space: nowrap; */
+    line-height: 1;
+}

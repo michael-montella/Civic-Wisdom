@@ -1,0 +1,27 @@
+:root {
+    --site--margin: clamp(0.625rem, 0.5rem + 0.625vw, 1.25rem);
+    --size--2rem: clamp(0.875rem, 0.65rem + 1.125vw, 2rem);
+    --size--2-5rem: clamp(1rem, 0.7rem + 1.5vw, 2.5rem);
+    --size--3rem: clamp(1.125rem, 0.825rem + 1.5vw, 2.625rem);
+    --size--3-5rem: clamp(1.5rem, 1.1rem + 2vw, 3.5rem);
+    --size--4rem: clamp(1.75rem, 1.3rem + 2.25vw, 4rem);
+    --size--4-5rem: clamp(2.25rem, 1.8rem + 2.25vw, 4.5rem);
+    --size--5rem: clamp(3rem, 2.6rem + 2vw, 5rem);
+    --size--5-5rem: clamp(3.25rem, 2.8rem + 2.25vw, 5.5rem);
+    --size--6rem: clamp(3.5rem, 3rem + 2.5vw, 6rem);
+    --size--6-5rem: clamp(3.75rem, 3.2rem + 2.75vw, 6.5rem);
+    --size--7rem: clamp(4rem, 3.4rem + 3vw, 7rem);
+    --size--7-5rem: clamp(4.25rem, 3.6rem + 3.25vw, 7.5rem);
+    --size--8rem: clamp(4.5rem, 3.8rem + 3.5000000000000004vw, 8rem);
+    --size--8-5rem: clamp(4.75rem, 4rem + 3.75vw, 8.5rem);
+    --size--9rem: clamp(5rem, 4.2rem + 4vw, 9rem);
+    --size--9-5rem: clamp(5.25rem, 4.4rem + 4.25vw, 9.5rem);
+    --size--10rem: clamp(5.5rem, 4.6rem + 4.5vw, 10rem);
+    --size--11rem: clamp(5.75rem, 4.7rem + 5.25vw, 11rem);
+    --size--12rem: clamp(6rem, 4.8rem + 6vw, 12rem);
+    --size--13rem: clamp(6.5rem, 5.2rem + 6.5vw, 13rem);
+    --size--14rem: clamp(7rem, 5.6rem + 7.000000000000001vw, 14rem);
+    --size--15rem: clamp(7.5rem, 6rem + 7.5vw, 15rem);
+    --size--16rem: clamp(8rem, 6.4rem + 8vw, 16rem);
+}
+
