@@ -208,7 +208,7 @@ const adjustTextSize = () => {
 /** approach section text flip */
 const approachTextFlip = (index) => {
     index += 1
-
+    
     gsap.to($("[text-flip]"), {
         translateY: `${index * -100}%`,
         stagger: {
@@ -217,7 +217,7 @@ const approachTextFlip = (index) => {
         duration: 0.5,
         ease: "power2.inOut"
     })
-    gsap.to($(".approach_section_p_wrapper"), {
+    gsap.to($(".approach_flip_wrapper"), {
         translateY: `${index * -100}%`,
         stagger: {
             amount: 0.2
