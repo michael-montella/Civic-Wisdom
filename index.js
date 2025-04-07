@@ -180,9 +180,9 @@ const lineSlideUp = () => {
     })
 }
 
-let lineSplit
+let textSplit
 const splitLines = () => {
-    lineSplit = new SplitType("[text-split]", {
+    textSplit = new SplitType("[text-split]", {
         types: "lines, words"
     })
     lineWipe()
@@ -205,19 +205,17 @@ const adjustTextSize = () => {
 }
 
 
+/** approach section text flip */
 const approachTextFlip = (index) => {
     index += 1
 
-    gsap.to($("[text-flip-large]"), {
+    gsap.to($("[text-flip]"), {
         translateY: `${index * -100}%`,
         stagger: {
             amount: 0.2
         },
         duration: 0.5,
-        ease: "power2.inOut",
-        onComplete: () => {
-            console.log()
-        }
+        ease: "power2.inOut"
     })
     gsap.to($(".approach_section_p_wrapper"), {
         translateY: `${index * -100}%`,
@@ -254,22 +252,6 @@ window.addEventListener('DOMContentLoaded', () => {
         })
     })
 
-    /** sticky section */
-    // $("[sticky-bottom]").each(function () {
-    //     let tl = gsap.timeline({
-    //         scrollTrigger: {
-    //             trigger: $(this),
-    //             start: "bottom bottom",
-    //             end: "bottom top",
-    //             scrub: 1,
-    //             pin: true,
-    //         }
-    //     })
-    //     tl.to($(this).children(), {
-    //         scale: 0.9
-    //     })
-    // })
-
 
     /** approach section text flip */
     $(".sticky_trigger").each(function (index) {
@@ -297,7 +279,7 @@ const lenis = new Lenis({
 
 
 window.addEventListener('resize', () => {
-    lineSplit.revert()
+    textSplit.revert()
     splitLines()
     adjustTextSize();
 })
