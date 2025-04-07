@@ -43,85 +43,85 @@ function initDirectionalButtonHover() {
 
 function initMarqueeScrollDirection() {
     document.querySelectorAll('[data-marquee-scroll-direction-target]').forEach((marquee) => {
-      // Query marquee elements
-      const marqueeContent = marquee.querySelector('[data-marquee-collection-target]');
-      const marqueeScroll = marquee.querySelector('[data-marquee-scroll-target]');
-      if (!marqueeContent || !marqueeScroll) return;
-  
-      // Get data attributes
-      const { marqueeSpeed: speed, marqueeDirection: direction, marqueeDuplicate: duplicate, marqueeScrollSpeed: scrollSpeed } = marquee.dataset;
-  
-      // Convert data attributes to usable types
-      const marqueeSpeedAttr = parseFloat(speed);
-      const marqueeDirectionAttr = direction === 'right' ? 1 : -1; // 1 for right, -1 for left
-      const duplicateAmount = parseInt(duplicate || 0);
-      const scrollSpeedAttr = parseFloat(scrollSpeed);
-      const speedMultiplier = window.innerWidth < 479 ? 0.25 : window.innerWidth < 991 ? 0.5 : 1;
-  
-      let marqueeSpeed = marqueeSpeedAttr * (marqueeContent.offsetWidth / window.innerWidth) * speedMultiplier;
-  
-      // Precompute styles for the scroll container
-      marqueeScroll.style.marginLeft = `${scrollSpeedAttr * -1}%`;
-      marqueeScroll.style.width = `${(scrollSpeedAttr * 2) + 100}%`;
-  
-      // Duplicate marquee content
-      if (duplicateAmount > 0) {
-        const fragment = document.createDocumentFragment();
-        for (let i = 0; i < duplicateAmount; i++) {
-          fragment.appendChild(marqueeContent.cloneNode(true));
+        // Query marquee elements
+        const marqueeContent = marquee.querySelector('[data-marquee-collection-target]');
+        const marqueeScroll = marquee.querySelector('[data-marquee-scroll-target]');
+        if (!marqueeContent || !marqueeScroll) return;
+
+        // Get data attributes
+        const { marqueeSpeed: speed, marqueeDirection: direction, marqueeDuplicate: duplicate, marqueeScrollSpeed: scrollSpeed } = marquee.dataset;
+
+        // Convert data attributes to usable types
+        const marqueeSpeedAttr = parseFloat(speed);
+        const marqueeDirectionAttr = direction === 'right' ? 1 : -1; // 1 for right, -1 for left
+        const duplicateAmount = parseInt(duplicate || 0);
+        const scrollSpeedAttr = parseFloat(scrollSpeed);
+        const speedMultiplier = window.innerWidth < 479 ? 0.25 : window.innerWidth < 991 ? 0.5 : 1;
+
+        let marqueeSpeed = marqueeSpeedAttr * (marqueeContent.offsetWidth / window.innerWidth) * speedMultiplier;
+
+        // Precompute styles for the scroll container
+        marqueeScroll.style.marginLeft = `${scrollSpeedAttr * -1}%`;
+        marqueeScroll.style.width = `${(scrollSpeedAttr * 2) + 100}%`;
+
+        // Duplicate marquee content
+        if (duplicateAmount > 0) {
+            const fragment = document.createDocumentFragment();
+            for (let i = 0; i < duplicateAmount; i++) {
+                fragment.appendChild(marqueeContent.cloneNode(true));
+            }
+            marqueeScroll.appendChild(fragment);
         }
-        marqueeScroll.appendChild(fragment);
-      }
-  
-      // GSAP animation for marquee content
-      const marqueeItems = marquee.querySelectorAll('[data-marquee-collection-target]');
-      const animation = gsap.to(marqueeItems, {
-        xPercent: -100, // Move completely out of view
-        repeat: -1,
-        duration: marqueeSpeed,
-        ease: 'linear'
-      }).totalProgress(0.5);
-  
-      // Initialize marquee in the correct direction
-      gsap.set(marqueeItems, { xPercent: marqueeDirectionAttr === 1 ? 100 : -100 });
-      animation.timeScale(marqueeDirectionAttr); // Set correct direction
-      animation.play(); // Start animation immediately
-  
-      // Set initial marquee status
-      marquee.setAttribute('data-marquee-status', 'normal');
-  
-      // ScrollTrigger logic for direction inversion
-      ScrollTrigger.create({
-        trigger: marquee,
-        start: 'top bottom',
-        end: 'bottom top',
-        onUpdate: (self) => {
-          const isInverted = self.direction === 1; // Scrolling down
-          const currentDirection = isInverted ? -marqueeDirectionAttr : marqueeDirectionAttr;
-  
-          // Update animation direction and marquee status
-          animation.timeScale(currentDirection);
-          marquee.setAttribute('data-marquee-status', isInverted ? 'normal' : 'inverted');
-        }
-      });
-  
-      // Extra speed effect on scroll
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: marquee,
-          start: '0% 100%',
-          end: '100% 0%',
-          scrub: 0
-        }
-      });
-  
-      const scrollStart = marqueeDirectionAttr === -1 ? scrollSpeedAttr : -scrollSpeedAttr;
-      const scrollEnd = -scrollStart;
-  
-      tl.fromTo(marqueeScroll, { x: `${scrollStart}vw` }, { x: `${scrollEnd}vw`, ease: 'none' });
+
+        // GSAP animation for marquee content
+        const marqueeItems = marquee.querySelectorAll('[data-marquee-collection-target]');
+        const animation = gsap.to(marqueeItems, {
+            xPercent: -100, // Move completely out of view
+            repeat: -1,
+            duration: marqueeSpeed,
+            ease: 'linear'
+        }).totalProgress(0.5);
+
+        // Initialize marquee in the correct direction
+        gsap.set(marqueeItems, { xPercent: marqueeDirectionAttr === 1 ? 100 : -100 });
+        animation.timeScale(marqueeDirectionAttr); // Set correct direction
+        animation.play(); // Start animation immediately
+
+        // Set initial marquee status
+        marquee.setAttribute('data-marquee-status', 'normal');
+
+        // ScrollTrigger logic for direction inversion
+        ScrollTrigger.create({
+            trigger: marquee,
+            start: 'top bottom',
+            end: 'bottom top',
+            onUpdate: (self) => {
+                const isInverted = self.direction === 1; // Scrolling down
+                const currentDirection = isInverted ? -marqueeDirectionAttr : marqueeDirectionAttr;
+
+                // Update animation direction and marquee status
+                animation.timeScale(currentDirection);
+                marquee.setAttribute('data-marquee-status', isInverted ? 'normal' : 'inverted');
+            }
+        });
+
+        // Extra speed effect on scroll
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: marquee,
+                start: '0% 100%',
+                end: '100% 0%',
+                scrub: 0
+            }
+        });
+
+        const scrollStart = marqueeDirectionAttr === -1 ? scrollSpeedAttr : -scrollSpeedAttr;
+        const scrollEnd = -scrollStart;
+
+        tl.fromTo(marqueeScroll, { x: `${scrollStart}vw` }, { x: `${scrollEnd}vw`, ease: 'none' });
     });
-  }
-  
+}
+
 
 
 /** line wipe animation */
@@ -189,7 +189,7 @@ const splitLines = () => {
     lineSlideUp()
 }
 
-function adjustTextSize() {
+const adjustTextSize = () => {
     // Assuming the elements have the class 'dynamic-container' and 'dynamic-text'
     const dynamicContainers = document.querySelectorAll('[textContainer]');
     const dynamicTexts = document.querySelectorAll('[data-width=full]');
@@ -205,6 +205,29 @@ function adjustTextSize() {
 }
 
 
+const approachTextFlip = (index) => {
+    index += 1
+
+    gsap.to($("[text-flip-large]"), {
+        translateY: `${index * -100}%`,
+        stagger: {
+            amount: 0.2
+        },
+        duration: 0.5,
+        ease: "power2.inOut",
+        onComplete: () => {
+            console.log()
+        }
+    })
+    gsap.to($(".approach_section_p_wrapper"), {
+        translateY: `${index * -100}%`,
+        stagger: {
+            amount: 0.2
+        },
+        duration: 0.5,
+        ease: "power2.inOut"
+    })
+}
 
 
 
@@ -213,6 +236,8 @@ window.addEventListener('DOMContentLoaded', () => {
     splitLines()
     adjustTextSize();
     initMarqueeScrollDirection();
+    initDirectionalButtonHover();
+
 
     /** line break animation */
     $("[line-break]").each(function (index) {
@@ -229,59 +254,47 @@ window.addEventListener('DOMContentLoaded', () => {
         })
     })
 
-
     /** sticky section */
-    $("[sticky-bottom]").each(function () {
-        let tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: $(this),
-                start: "bottom bottom",
-                end: "bottom top",
-                scrub: 1,
-                pin: true,
-            }
-        })
-        tl.to($(this).children(), {
-            scale: 0.9
-        })
-    })
+    // $("[sticky-bottom]").each(function () {
+    //     let tl = gsap.timeline({
+    //         scrollTrigger: {
+    //             trigger: $(this),
+    //             start: "bottom bottom",
+    //             end: "bottom top",
+    //             scrub: 1,
+    //             pin: true,
+    //         }
+    //     })
+    //     tl.to($(this).children(), {
+    //         scale: 0.9
+    //     })
+    // })
+
 
     /** approach section text flip */
     $(".sticky_trigger").each(function (index) {
-        index++
         let tl = gsap.timeline({
             scrollTrigger: {
                 trigger: $(this),
-                start: "top 50%",
+                start: "top top",
                 onEnter: () => {
-                    tl.play()
+                    approachTextFlip(index)
                 },
                 onLeaveBack: () => {
-                    tl.reverse()
+                    approachTextFlip(index - 1)
                 }
             }
         })
-        tl.to($(".text_scroll_wrapper").find(".word"), {
-            translateY: `${index * -100}%`,
-            stagger: {
-                amount: 0.2
-            },
-            duration: 0.3
-        })
     })
-
-    // Initialize Directional Button Hover
-    initDirectionalButtonHover();
-
-    /** lenis smooth scroll */
-    const lenis = new Lenis({
-        autoRaf: true,
-    });
-
-    // lenis.on('scroll', ScrollTrigger.update);
-    // gsap.ticker.add((time) => { lenis.raf(time * 1000); });
-    // gsap.ticker.lagSmoothing(0);
 })
+
+
+
+/** lenis smooth scroll */
+const lenis = new Lenis({
+    autoRaf: true,
+});
+
 
 window.addEventListener('resize', () => {
     lineSplit.revert()
