@@ -1,6 +1,49 @@
 gsap.registerPlugin(ScrollTrigger)
 
 
+/** publications swiper */
+$(".slider-main_component").each(function () {
+    const swiper = new Swiper($(this).find(".swiper")[0], {
+        slidesPerView: '1',
+        keyboard: true,
+        spaceBetween: '4%',
+        loop: true,
+        slideActiveClass: 'is-active',
+        slideDuplicateActiveClass: 'is-active',
+        breakpoints: {
+            // mobile landscape
+            480: {
+                slidesPerView: '1',
+                spaceBetween: '4%'
+            },
+            // tablet
+            768: {
+                slidesPerView: '2',
+                spaceBetween: '3%'
+            },
+            // desktop
+            992: {
+                slidesPerView: '3',
+                spaceBetween: '2%'
+            }
+        },
+        pagination: {
+            el: $(this).find(".swiper-bullet-wrapper")[0],
+            bulletActiveClass: "is-active",
+            bulletClass: "swiper-bullet",
+            bulletElement: "button",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: $(this).find(".swiper-next")[0],
+            prevEl: $(this).find(".swiper-prev")[0],
+            disabledClass: "is-disabled"
+        }
+    })
+})
+
+
+
 /** button hover animation */
 function initDirectionalButtonHover() {
     document.querySelectorAll('[data-btn-hover]').forEach(button => {
@@ -41,6 +84,8 @@ function initDirectionalButtonHover() {
     }
 }
 
+
+/** marquee */
 function initMarqueeScrollDirection() {
     document.querySelectorAll('[data-marquee-scroll-direction-target]').forEach((marquee) => {
         // Query marquee elements
@@ -153,7 +198,7 @@ const lineSlideUp = () => {
     $("[line-slide-up]").each(function (index) {
         let el = $(this).find('.line').wrap("<div class='line-block'></div>")
         let tl = gsap.timeline({ paused: true })
-        tl.from(el, {
+        tl.from(el.find('.word'), {
             yPercent: 100,
             duration: 0.65,
             ease: "power4.out",
@@ -172,7 +217,7 @@ const lineSlideUp = () => {
 
         ScrollTrigger.create({
             trigger: $(this),
-            start: "top 90%",
+            start: "top bottom",
             onEnter: () => {
                 tl.play()
             }
@@ -180,6 +225,8 @@ const lineSlideUp = () => {
     })
 }
 
+
+/** split text */
 let textSplit
 const splitLines = () => {
     textSplit = new SplitType("[text-split]", {
@@ -189,6 +236,9 @@ const splitLines = () => {
     lineSlideUp()
 }
 
+
+
+/** full width text */
 const adjustTextSize = () => {
     // Assuming the elements have the class 'dynamic-container' and 'dynamic-text'
     const dynamicContainers = document.querySelectorAll('[textContainer]');
@@ -208,7 +258,7 @@ const adjustTextSize = () => {
 /** approach section text flip */
 const approachTextFlip = (index) => {
     index += 1
-    
+
     gsap.to($("[text-flip]"), {
         translateY: `${index * -100}%`,
         stagger: {
@@ -226,6 +276,10 @@ const approachTextFlip = (index) => {
         ease: "power2.inOut"
     })
 }
+
+
+
+
 
 
 
@@ -252,6 +306,22 @@ window.addEventListener('DOMContentLoaded', () => {
         })
     })
 
+    /** svg animation */
+    $("[svg-anim]").each(function () {
+        ScrollTrigger.create({
+            trigger: $(this),
+            start: "top bottom",
+            onEnter: () => {
+                gsap.from($(this), {
+                    scale: 0,
+                    rotate: 90,
+                    duration: 1,
+                    ease: "power4.out"
+                })
+            }
+        })
+    })
+
 
     /** approach section text flip */
     $(".sticky_trigger").each(function (index) {
@@ -268,7 +338,11 @@ window.addEventListener('DOMContentLoaded', () => {
             }
         })
     })
-})
+}) /** window event listener – DOMContentLoaded */
+
+
+
+
 
 
 
