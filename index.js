@@ -212,7 +212,8 @@ const lineSlideUp = () => {
             onLeaveBack: () => {
                 tl.progress(0)
                 tl.pause()
-            }
+            },
+            
         })
 
         ScrollTrigger.create({
@@ -220,7 +221,7 @@ const lineSlideUp = () => {
             start: "top bottom",
             onEnter: () => {
                 tl.play()
-            }
+            },
         })
     })
 }
@@ -290,6 +291,20 @@ window.addEventListener('DOMContentLoaded', () => {
     initMarqueeScrollDirection();
     initDirectionalButtonHover();
 
+    $(".about_marquee-advanced").each(function () {
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: $(this),
+                start: "bottom bottom",
+                end: "bottom top",
+                scrub: 1,
+                ease: "linear"
+            }
+        })
+        tl.to($(this), {
+            scale: 1.1
+        })
+    })
 
     /** line break animation */
     $("[line-break]").each(function (index) {
