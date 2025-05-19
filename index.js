@@ -1,6 +1,3 @@
-gsap.registerPlugin(ScrollTrigger)
-
-
 /** publications swiper */
 $(".slider-main_component").each(function () {
     const swiper = new Swiper($(this).find(".swiper")[0], {
@@ -23,7 +20,7 @@ $(".slider-main_component").each(function () {
             },
             // desktop
             992: {
-                slidesPerView: '3',
+                slidesPerView: '4',
                 spaceBetween: '2%'
             }
         },
@@ -193,101 +190,58 @@ const lineWipe = () => {
     })
 }
 
-/** line slide up animation */
-const lineSlideUp = () => {
-    $("[line-slide-up]").each(function (index) {
-        let el = $(this).find('.line').wrap("<div class='line-block'></div>")
-        let tl = gsap.timeline({ paused: true })
-        tl.from(el.find('.word'), {
-            yPercent: 100,
+
+document.addEventListener('DOMContentLoaded', () => {
+    gsap.registerPlugin(ScrollTrigger, SplitText);
+
+    document.querySelectorAll("[text-split]").forEach((text) => {
+        console.log(text)
+        const split = SplitText.create(text, {
+            type: "words, chars",
+            mask: "words",
+            wordsClass: "word",
+            charsClass: "char",
+        })
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: text,
+                start: "top bottom",
+                end: "top 90%",
+                toggleActions: "none play none reset",
+            },
+        })
+
+        tl.from(split.words, {
+            yPercent: 110,
+            delay: 0.2,
             duration: 0.65,
-            ease: "power4.out",
-            delay: 0.15,
-            stagger: { amount: 0.1 }
+            stagger: { amount: 0.1 },
+            ease: "power2.out",
         })
 
-        ScrollTrigger.create({
-            trigger: $(this),
-            start: "top bottom",
-            onLeaveBack: () => {
-                tl.progress(0)
-                tl.pause()
-            },
-            
+        gsap.set(text, {autoAlpha: 1})
+    })
+
+    document.querySelectorAll("[spin-reveal]").forEach((el) => {
+        gsap.from(el, {
+            delay: 0.2,
+            rotate: 90,
+            scale: 0,
+            duration: 1,
+            ease: "power2.out",
         })
 
-        ScrollTrigger.create({
-            trigger: $(this),
-            start: "top bottom",
-            onEnter: () => {
-                tl.play()
-            },
+        gsap.set(el, { autoAlpha: 1 })
+    })
+
+    document.querySelectorAll("[line-wipe]").forEach((el) => {
+        const split = SplitText.create(el, {
+            type: "lines",
+            linesClass: "line",
         })
+        lineWipe()
     })
-}
 
-
-/** split text */
-let textSplit
-const splitLines = () => {
-    textSplit = new SplitType("[text-split]", {
-        types: "lines, words"
-    })
-    lineWipe()
-    lineSlideUp()
-}
-
-
-
-/** full width text */
-const adjustTextSize = () => {
-    // Assuming the elements have the class 'dynamic-container' and 'dynamic-text'
-    const dynamicContainers = document.querySelectorAll('[textContainer]');
-    const dynamicTexts = document.querySelectorAll('[data-width=full]');
-
-    dynamicContainers.forEach((dynamicContainer, index) => {
-        const containerWidth = dynamicContainer.offsetWidth;
-        const dynamicTextWidth = dynamicTexts[index].offsetWidth;
-
-        const fontSize = (containerWidth / dynamicTextWidth) * parseFloat(window.getComputedStyle(dynamicTexts[index]).fontSize);
-
-        dynamicTexts[index].style.fontSize = fontSize + 'px';
-    });
-}
-
-
-/** approach section text flip */
-const approachTextFlip = (index) => {
-    index += 1
-
-    gsap.to($("[text-flip]"), {
-        translateY: `${index * -100}%`,
-        stagger: {
-            amount: 0.2
-        },
-        duration: 0.5,
-        ease: "power2.inOut"
-    })
-    gsap.to($(".approach_flip_wrapper"), {
-        translateY: `${index * -100}%`,
-        stagger: {
-            amount: 0.2
-        },
-        duration: 0.5,
-        ease: "power2.inOut"
-    })
-}
-
-
-
-
-
-
-
-window.addEventListener('DOMContentLoaded', () => {
-
-    splitLines()
-    adjustTextSize();
     initMarqueeScrollDirection();
     initDirectionalButtonHover();
 
@@ -331,29 +285,15 @@ window.addEventListener('DOMContentLoaded', () => {
                     scale: 0,
                     rotate: 90,
                     duration: 1,
-                    ease: "power4.out"
+                    ease: "power2.out"
                 })
             }
         })
     })
 
+})
 
-    /** approach section text flip */
-    $(".sticky_trigger").each(function (index) {
-        let tl = gsap.timeline({
-            scrollTrigger: {
-                trigger: $(this),
-                start: "top top",
-                onEnter: () => {
-                    approachTextFlip(index)
-                },
-                onLeaveBack: () => {
-                    approachTextFlip(index - 1)
-                }
-            }
-        })
-    })
-}) /** window event listener – DOMContentLoaded */
+
 
 
 
@@ -368,7 +308,5 @@ const lenis = new Lenis({
 
 
 window.addEventListener('resize', () => {
-    textSplit.revert()
-    splitLines()
-    adjustTextSize();
+
 })
